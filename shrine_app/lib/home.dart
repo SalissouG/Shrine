@@ -20,11 +20,14 @@ import 'model/products_repository.dart';
 import 'supplemental/asymmetric_view.dart';
 
 class HomePage extends StatelessWidget {
-  const HomePage({Key? key}) : super(key: key);
-
-  List<Card> _buildGridCards(BuildContext context) {
   
-    List<Product> products = ProductsRepository.loadProducts(Category.all);
+    const HomePage({this.category = Category.all, Key? key}) : super(key: key);
+
+    final Category category;
+
+    List<Card> _buildGridCards(BuildContext context, Category category) {
+  
+    List<Product> products = ProductsRepository.loadProducts(category);
 
     if (products.isEmpty) {
       return const <Card>[];
@@ -85,44 +88,13 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     // TODO: Return an AsymmetricView (104)
     // TODO: Pass Category variable to AsymmetricView (104)
+   
     return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          icon: const Icon(
-            Icons.menu,
-            semanticLabel: 'menu',
-          ),
-          onPressed: () {
-            print('Menu button');
-          },
-        ),
-        title: const Text('SHRINE'),
-        actions: <Widget>[
-        IconButton(
-          icon: const Icon(
-            Icons.search,
-            semanticLabel: 'search',
-          ),
-          onPressed: () {
-            print('Search button');
-          },
-        ),
-        IconButton(
-          icon: const Icon(
-            Icons.tune,
-            semanticLabel: 'filter',
-          ),
-          onPressed: () {
-            print('Filter button');
-          },
-        ),
-      ],
-      ),
       body: GridView.count(
         crossAxisCount: 2,
         padding: const EdgeInsets.all(16.0),
         childAspectRatio: 8.0 / 9.0,
-        children: _buildGridCards(context),
+        children: _buildGridCards(context, category),
       ),
       resizeToAvoidBottomInset: false,
     );
